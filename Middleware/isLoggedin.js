@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const isLoggedin=(req,res,next)=>{
+
     const token=req.headers["token"];
 
     if (!token) {
@@ -9,15 +10,13 @@ const isLoggedin=(req,res,next)=>{
 
     try {
         const decoded = jwt.verify(token, 'secret');
-        console.log(decoded)
-        if(!decoded){
-            return res.status(401).json({ message: "Session expired" });
-        }
+
         req.user = decoded.data; 
+        // console.log("res is=>",req)
         next()
     //    console.log(decoded)
     } catch (error) {
-        console.log(error)
+        return res.status(401).json({ message: "session expired!" });
     }
 
 }
